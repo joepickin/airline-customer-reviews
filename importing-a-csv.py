@@ -37,14 +37,14 @@ print(airline_df["Response Id"].head(10))
 
 # Pivot from wide to long: this makes analyising survey data easier
 
-# Find the response columns (satisfaction, all columns scored from 0-5) that we want to pivot.
-response_columns = ['satisfaction', 'Seat comfort', 'Departure/Arrival time convenient', 'Food and drink', 'Gate location', 
+# Find the response columns (all columns scored from 0-5) that we want to pivot.
+response_columns = ['Seat comfort', 'Departure/Arrival time convenient', 'Food and drink', 'Gate location', 
                        'Inflight wifi service', 'Inflight entertainment', 'Online support', 'Ease of Online booking', 
                        'On-board service', 'Leg room service', 'Baggage handling', 'Checkin service', 'Cleanliness', 
                        'Online boarding']
 
-# Everything else is info about the customer/ flight.
-categorical_columns = ['Response Id', 'Gender', 'Customer Type', 'Type of Travel', 'Class', "Age", 
+# Everything else is info about the customer/ flight, plus the satisfaction column
+categorical_columns = ['Response Id', 'satisfaction', 'Gender', 'Customer Type', 'Type of Travel', 'Class', "Age", 
                        "Flight Distance", "Departure Delay in Minutes", "Arrival Delay in Minutes"]
 
 airline_long_df = pd.melt(airline_df, id_vars=categorical_columns, value_vars=response_columns)
@@ -53,3 +53,7 @@ print(airline_long_df.head(20))
 # Sort by Response Id to make it look better
 airline_long_df = airline_long_df.sort_values(by=['Response Id'])
 print(airline_long_df.head(20))
+
+# Convert the data types so variable is a string and value is an int64
+airline_long_df = airline_long_df.convert_dtypes()
+print(airline_long_df.dtypes)
